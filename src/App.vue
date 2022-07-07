@@ -29,16 +29,21 @@ export default {
   },
   methods: {
     addTask() {
-      // Create random id for the task.id
-      let taskId = Math.floor(Math.random() * (99999999 * 100000000) * 100000000)
-      // Pushing to tasks array
-      let newTask = {
-        id: taskId,
-        name: this.newTaskInput,
+      if(this.newTaskInput === ""){
+        alert('Seems you forgot to add a task')
       }
-      this.tasks.push(newTask);
-      // Clear the input after the user selects Add Task
-      this.newTaskInput = '';
+      else {
+        // Create random id for the task.id
+        let taskId = Math.floor(Math.random() * (99999999 * 100000000) * 100000000)
+        // Pushing to tasks array
+        let newTask = {
+          id: taskId,
+          name: this.newTaskInput,
+        }
+        this.tasks.push(newTask);
+        // Clear the input after the user selects Add Task
+        this.newTaskInput = '';
+      }
     },
     removeTask(taskId) {
       // filter the list of tasks that do NOT match the tasks. 
