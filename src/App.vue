@@ -27,6 +27,15 @@ export default {
       tasks: [],
     }
   },
+  created() {
+    console.log(this.$store.state.toasts.length);
+    this.$store.commit('addToast', {
+      title: "Hello Vuex!",
+      type: 'success',
+      message: 'It looks like you have set up Vuex!'
+    })
+    console.log(this.$store.state.toasts);
+  },
   methods: {
     addTask() {
       if(this.newTaskInput === ""){
