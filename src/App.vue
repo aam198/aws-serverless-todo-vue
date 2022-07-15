@@ -96,18 +96,20 @@ button, input {
 }
 
 button {
+  color: #2a3453;
   border: 1px solid #2a3453;
   background-color: #ab5e5c;
   cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
   box-shadow: 0 1.5rem 2.5rem 0 rgba(4,12,33,0);
-  transition: transform .5s ease-out, box-shadow .5s ease;
+  transition: transform .5s ease-out, box-shadow .5s ease, background-color 0.2s ease;
   margin-left: 1rem;
 }
 
 button:hover{
-  box-shadow: 0 1.5rem 2.5rem 0 #040c21;
+  background-color: #bc7e7d;
+  box-shadow: 0 1.5rem 5.5rem 0 #040c21;
   transform: translateY(-.25rem);
 }
 
