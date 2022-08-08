@@ -11,13 +11,17 @@
       <!-- Double bracket to access data -->
       <span> {{ task.name}} </span><span class="delete"><button @click="removeTask(task.id)">X</button></span>
     </div>
+    <ExtraToasts />
 </template>
 
 <script>
+import ExtraToasts from '@/components/ExtraToasts.vue';
 
 export default {
   name: 'App',
   components: {
+    ExtraToasts
+
   },
   data() {
     // Return an object
@@ -27,15 +31,16 @@ export default {
       tasks: [],
     }
   },
-  created() {
-    console.log(this.$store.state.toasts.length);
-    this.$store.commit('addToast', {
-      title: "Hello Vuex!",
-      type: 'success',
-      message: 'It looks like you have set up Vuex!'
-    })
-    console.log(this.$store.state.toasts);
-  },
+  // Lifecycle Hook, default function that runs anytime a component is created. 
+  // created() {
+  //   console.log(this.$store.state.toasts.length);
+  //   this.$store.commit('addToast', {
+  //     title: "Hello Vuex!",
+  //     type: 'success',
+  //     message: 'It looks like you have set up Vuex!'
+  //   })
+  //   console.log(this.$store.state.toasts);
+  // },
   methods: {
     addTask() {
       if(this.newTaskInput === ""){
