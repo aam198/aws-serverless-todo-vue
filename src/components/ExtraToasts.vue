@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .toasts-wrapper {
     width: 600px;
     min-height: 150px;
@@ -33,6 +33,6 @@ export default {
     align-items: center;
     position: fixed;
     right: 1rem;
-    bottom: 1rem;
+    bottom: 2rem;
   }
 </style>

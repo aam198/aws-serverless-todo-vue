@@ -123,14 +123,16 @@ export default {
   border: none;
   cursor: pointer;
   background: none;
-  font-size: 1rem;
+  font-size: 1.5rem;
   height: 30px;
   width: 30px;
   transition: transform 200ms ease;
 }
 
 .toast .header button:hover {
-  transform: scale(1.3);
+  transform: scale(1.2);
+  background-color: var(--cream);
+  box-shadow: none;
 }
 
 .toast .content {
