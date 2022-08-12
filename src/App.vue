@@ -1,4 +1,5 @@
 <template>
+  <div class="app-wrapper">
     <header>
       <h1>Vue Todo App</h1>
     </header>
@@ -9,8 +10,9 @@
     <!-- Tasks will be an array that lists our tasks -->
     <div class="task" v-for="task in tasks" :key="task.id">
       <!-- Double bracket to access data -->
-      <span> {{ task.name}} </span><span><button class="delete" @click="removeTask(task.id)"><i class="fa-solid fa-rectangle-xmark"></i></button></span>
+      <span> {{ task.name}} </span><span><button class="delete" @click="removeTask(task.id)"><i class="fa-solid fa-rectangle-xmark "></i></button></span>
     </div>
+  </div>
     <ExtraToasts />
 </template>
 
@@ -21,7 +23,6 @@ export default {
   name: 'App',
   components: {
     ExtraToasts
-
   },
   data() {
     // Return an object
@@ -115,10 +116,14 @@ export default {
   padding-bottom: 30px;
   max-width: 500px;
   margin: 0 auto;
-  max-height: 100vh;
-  height: 100%;
   border-radius: 10px;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);  
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.app-wrapper{
+  max-height: auto;
 }
 
 header{
@@ -126,8 +131,16 @@ header{
   border-radius: 10px;
 }
 
+.adaptive-glass {
+  --glass-lightness: 100%;
+  background: hsl(0 0% var(--glass-lightness) / 50%);
+  backdrop-filter: blur(40px);
+}
+
+
 h1 {
-  font-size: 2.5rem;
+  text-shadow: 0 1px 0 hsl(0 0% 0% / 20%);
+  font-size: clamp(1.25rem, calc(1rem + 2vw), 2.5rem);
   padding: 1rem 0px;
   color: #efae22;
   font-family: 'Gulzar', serif;
@@ -155,33 +168,35 @@ button.delete, button.addTask {
   font-weight: bold;
   font-size: 1rem;
   box-shadow: 0 1.5rem 2.5rem 0 rgba(4,12,33,0);
-  transition: transform .5s ease-out, box-shadow .5s ease, background-color 0.2s ease;
+  transition: transform .5s ease-out, box-shadow .5s ease, background-color 0.2s ease, text-shadow .5s ease;
   margin-left: 1rem;
   padding: 8px 10px;
   margin: 1rem 10px;
 }
 
-button:hover{
+button.addTask:hover{
   background-color: #bc7e7d;
   box-shadow: 0 1rem 10rem 0 #040c21;
   transform: translateY(-.25rem);
+  text-shadow: 0 1px 0 hsl(0 0% 0% / 20%);
 }
 
 button.delete  {
   border: none;
   font-size: 1.5rem;
   background-color: transparent;
-  transition: box-shadow .5s ease;
+  transition: box-shadow .5s ease, transform .4s ease;
 }
 
 button:hover.delete  {
   background: none;
+  transform: translateY(-.25rem) scale(1.2);
 }
 
 
 .add-task-wrapper{
   display: flex;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 .add-task-wrapper input {
@@ -195,8 +210,8 @@ button:hover.delete  {
   background-color: #eee;
   border-radius: 5px;
   margin: 5px 10px;
-  padding: 5px 5px;
+  padding: 5px 10px;
+  font-weight: bold;
 }
-
 
 </style>
