@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
     <header>
-      <h1>Vue Todo App</h1>
+      <h1>Dashboard</h1>
     </header>
     <div class="add-task-wrapper">
       <input type="text" placeholder="Add a task" v-model="newTaskInput" @keydown.enter="addTask">
@@ -9,11 +9,26 @@
     </div>
     <!-- Tasks will be an array that lists our tasks -->
     <div class="task" v-for="task in tasks" :key="task.id">
+    <div class="task-main">
+      <span class="task-name"> <i class="fa-solid fa-circle-dot"></i> {{ task.name}} </span>
+      <span class="buttons">
+        <button class="browseImage" @click="browseForImage(task.id)"><i class="fa-solid fa-folder-open"></i></button>
+        <button class="edit" @click="editTask(task.id)"><i class="fa-solid fa-pen-nib"></i></button>
+        <button class="delete" @click="removeTask(task.id)"><i class="fa-solid fa-rectangle-xmark "></i></button>
+        </span>
+        <input :id="`fileInput-${task.id}`" type="file" class="file-input" @change="event => attachImage(event,task)" hidden  />
+    </div>
+    <!-- If the imageUrl is empty then this will hide -->
+    <div class="task-img" v-if="task.imageUrl">
+      <img :src="task.imageUrl" />
+    </div>
       <!-- Double bracket to access data -->
-      <span> {{ task.name}} </span><span><button class="delete" @click="removeTask(task.id)"><i class="fa-solid fa-rectangle-xmark "></i></button></span>
+      
     </div>
   </div>
+  <transition name= "toast">
     <ExtraToasts />
+  </transition>
 </template>
 
 <script>
@@ -105,13 +120,25 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Gulzar&family=Inter&display=swap'); 
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap');
+
+:root{
+  --dark-blue: #1d313b;
+  --med-blue: #4b6d7e;
+  --accent-blue: #518099;
+  --light-accent: #b2cfde;
+  --orange: #ff844b;
+  --light-orange: #ffe0d2;
+
+}
+
 #app {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Montserrat Alternates', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #efae22;
+  background-color: #f0f5f8;
   text-align: center;
-  color: #2a3453;
+  color: var(--dark-blue);
   margin-top: 60px;
   padding-bottom: 30px;
   max-width: 500px;
@@ -127,8 +154,9 @@ export default {
 }
 
 header{
-  background-color: #2a3453;
+  background-color: #518099;
   border-radius: 10px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
 }
 
 .adaptive-glass {
@@ -141,44 +169,77 @@ header{
 h1 {
   text-shadow: 0 1px 0 hsl(0 0% 0% / 20%);
   font-size: clamp(1.25rem, calc(1rem + 2vw), 2.5rem);
-  padding: 1rem 0px;
-  color: #efae22;
-  font-family: 'Gulzar', serif;
+  color: #ffffff;
+  font-family: 'Montserrat Alternates', sans-serif;
+  padding: 3rem 10px;
 }
 
 input {
+  font-family: inherit;
   font-size: 1rem;
+  font-weight: bold;
   border-radius: 10px;
   padding: 8px 10px;
-  border: 1px solid #2a3453;
+  border: 1px solid var(--light-accent);
   margin: 1rem 10px;
-  accent-color: #2a3453;
+  accent-color:var(--dark-blue);
+  transition: outline .2ms ease;
 }
 
 input:focus-visible{
-  outline: 1px solid #2a3453;
+  outline: 1px solid var(--dark-blue);
 }
 
-button.delete, button.addTask {
-  color: #2a3453;
-  border: 1px solid #2a3453;
-  border-radius: 10px;
-  background-color: #ab5e5c;
+button.addTask {
+  background-color: #ff844b;
+  color: var(--dark-blue);
+  border: 1px solid #ffe0d2;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
+}
+
+button.addTask{
+  border-radius: 12px;
   cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
+  font-family: inherit;
   box-shadow: 0 1.5rem 2.5rem 0 rgba(4,12,33,0);
   transition: transform .5s ease-out, box-shadow .5s ease, background-color 0.2s ease, text-shadow .5s ease;
-  margin-left: 1rem;
-  padding: 8px 10px;
-  margin: 1rem 10px;
+  margin: 1rem 15px;
+  padding: 10px 12px;
+}
+
+.buttons{
+  padding: 10px 12px;
+}
+
+
+button.delete, button.edit, button.browseImage {
+  color: #2a3453;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  font-family: inherit;
+  box-shadow: 0 1.5rem 2.5rem 0 rgba(4,12,33,0);
+  transition: transform .5s ease-out, box-shadow .5s ease, background-color 0.2s ease, text-shadow .5s ease;
+  margin: 1rem 0px;
 }
 
 button.addTask:hover{
-  background-color: #bc7e7d;
+  background-color: #ffe0d2;
+  border: 1px solid #ff844b;
   box-shadow: 0 1rem 10rem 0 #040c21;
   transform: translateY(-.25rem);
   text-shadow: 0 1px 0 hsl(0 0% 0% / 20%);
+}
+
+
+button.edit, button.browseImage{
+  background-color: transparent;
+  color: var(--orange);
+  border: none;
+  font-size: 1.5rem;
 }
 
 button.delete  {
@@ -203,15 +264,54 @@ button:hover.delete  {
   flex: 1;
 }
 
+
 .task {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #eee;
+  background-color: #ffffff;
   border-radius: 5px;
-  margin: 5px 10px;
+  margin: 8px 10px;
   padding: 5px 10px;
   font-weight: bold;
+  transition: box-shadow .3s ease-in;
 }
+.task:hover{
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
+}
+
+
+.task-name {
+  margin-left: 10px;
+}
+
+.task-name i{
+  margin-right: 10px;
+}
+
+/* Enter transitions */
+ .toast-enter-from {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+  .toast-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .toast-enter-active {
+    transition: all 0.3s ease;
+  }
+  /* leave transitions */
+  .toast-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .toast-leave-to {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+  .toast-leave-active {
+    transition: all 0.3s ease;
+  }
 
 </style>
