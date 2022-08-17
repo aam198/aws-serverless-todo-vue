@@ -16,7 +16,7 @@
         <!-- <button class="edit" @click="editTask(task.id)"><i class="fa-solid fa-pen-nib"></i></button> -->
         <button class="delete" @click="removeTask(task.id)"><i class="fa-solid fa-rectangle-xmark "></i></button>
         </span>
-       <input :id="`fileInput-${task.id}`" type="file" class="file-input" @change="event => attachImage(event, task)" />
+          <input :id="`fileInput-${task.id}`" type="file" class="file-input" @change="event => attachImage(event, task)" />
     </div>
     <!-- If the imageUrl is empty then this will hide -->
     <div class="task-img" v-if="task.imageUrl">
@@ -142,18 +142,20 @@ export default {
         },
        body: JSON.stringify(imageReqBody)
       })
+      
       let imageResponseJson = await imageRes.json();
       console.log(task,imageResponseJson);
 
       task.imageUrl = imageResponseJson.imageUrl;
 
-      await fetch("https://h9ozo62twe.execute-api.us-east-2.amazonaws.com/todos", {
+      const response = await fetch("https://h9ozo62twe.execute-api.us-east-2.amazonaws.com/todos", {
         method: 'put',
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(task)
       })
+      console.log(response);
       // Vue thing, since we're updating something inside of an object 
       this.$forceUpdate()
     }
