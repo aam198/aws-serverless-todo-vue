@@ -10,20 +10,20 @@
     <!-- Tasks will be an array that lists our tasks -->
     <div class="task" v-for="task in tasks" :key="task.id">
     <div class="task-main">
-      <span class="task-name"> <i class="fa-solid fa-circle-dot"></i> {{ task.name}} </span>
+      <span class="task-name">  {{ task.name}} </span>
+      <div class="task-img" v-if="task.imageUrl">
+      <img :src="task.imageUrl" />
+     </div>
       <span class="buttons">
         <button class="browseImage" @click="browseForImage(task.id)"><i class="fa-solid fa-file-image"></i></button>
         <!-- <button class="edit" @click="editTask(task.id)"><i class="fa-solid fa-pen-nib"></i></button> -->
         <button class="delete" @click="removeTask(task.id)"><i class="fa-solid fa-rectangle-xmark "></i></button>
         </span>
+        
           <input :id="`fileInput-${task.id}`" type="file" class="file-input" @change="event => attachImage(event, task)" />
     </div>
     <!-- If the imageUrl is empty then this will hide -->
-    <div class="task-img" v-if="task.imageUrl">
-      <img :src="task.imageUrl" />
-    </div>
-      <!-- Double bracket to access data -->
-      
+    
     </div>
   </div>
   <transition name= "toast">
@@ -159,10 +159,7 @@ export default {
       // Vue thing, since we're updating something inside of an object 
       this.$forceUpdate()
     }
-
   }
-
-
 }
 </script>
 
@@ -239,6 +236,61 @@ input:focus-visible{
   outline: 1px solid var(--dark-blue);
 }
 
+
+.add-task-wrapper{
+  display: flex;
+  margin-bottom: 1.2rem;
+}
+
+.add-task-wrapper input {
+  flex: 1;
+}
+
+.task-main{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-img {
+  display: inline-block;
+  max-width: 40%;
+  border: 1px solid white;
+}
+
+.task-img img {
+  max-width: 60%;
+}
+
+.task {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin: 8px 10px;
+  padding: 5px 10px;
+  font-weight: bold;
+  transition: box-shadow .3s ease-in;
+}
+.task:hover{
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
+}
+
+.task-name {
+  margin-left: 5px;
+}
+
+.task-name i{
+  margin-right: 10px;
+}
+
+.file-input{
+  display: none;
+  visibility: hidden;
+}
+
 button.addTask {
   background-color: #ff844b;
   color: var(--dark-blue);
@@ -259,7 +311,13 @@ button.addTask{
 }
 
 .buttons{
+  width: 20%;
+  position: relative;
   padding: 10px 12px;
+}
+
+.buttons i {
+  margin: 0px 2px;
 }
 
 
@@ -284,14 +342,24 @@ button.addTask:hover{
 }
 
 
-button.edit, button.browseImage{
+button.browseImage{
   background-color: transparent;
   color: var(--orange);
   border: none;
   font-size: 1.5rem;
 }
 
+button.browseImage:hover {
+  color: var(--light-orange);
+  transform: translateY(-.25rem) scale(1.2);
+}
+
 button.delete  {
+  position: absolute;
+  top: -15px;
+  right: -8px;
+  color: #AA6373;
+  padding-left: 20px;
   border: none;
   font-size: 1.5rem;
   background-color: transparent;
@@ -301,57 +369,10 @@ button.delete  {
 button:hover.delete  {
   background: none;
   transform: translateY(-.25rem) scale(1.2);
+  color:#c5959f; 
 }
 
 
-.add-task-wrapper{
-  display: flex;
-  margin-bottom: 1.2rem;
-}
-
-.add-task-wrapper input {
-  flex: 1;
-}
-
-.task-main{
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.task-img {
-  max-width: 40%;
-  border: 1px solid white;
-}
-
-.task {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ffffff;
-  border-radius: 5px;
-  margin: 8px 10px;
-  padding: 5px 10px;
-  font-weight: bold;
-  transition: box-shadow .3s ease-in;
-}
-.task:hover{
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
-}
-
-.task-name {
-  margin-left: 10px;
-}
-
-.task-name i{
-  margin-right: 10px;
-}
-
-.file-input{
-  display: none;
-  visibility: hidden;
-}
 
 /* Enter transitions */
  .toast-enter-from {
