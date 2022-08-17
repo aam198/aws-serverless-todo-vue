@@ -16,7 +16,7 @@
         <!-- <button class="edit" @click="editTask(task.id)"><i class="fa-solid fa-pen-nib"></i></button> -->
         <button class="delete" @click="removeTask(task.id)"><i class="fa-solid fa-rectangle-xmark "></i></button>
         </span>
-        <input :id="`fileInput-${task.id}`" type="file" class="file-input" @change="event => attachImage(event,task)" hidden  />
+       <input :id="`fileInput-${task.id}`" type="file" class="file-input" @change="event => attachImage(event, task)" />
     </div>
     <!-- If the imageUrl is empty then this will hide -->
     <div class="task-img" v-if="task.imageUrl">
@@ -120,6 +120,7 @@ export default {
         reader.readAsDataURL(file)
       })
     },
+
     
     async browseForImage(id) {
       const inputEl = document.getElementById(`fileInput-${id}`)
@@ -127,25 +128,34 @@ export default {
     },
 
     async attachImage(event, task) {
-      // Only taking in 1 file at a time so we can use the array.
-      let file = event.target.files[0];
-      let dataUrl = await this.getDataUrl(file);
-
-      console.log(task, dataUrl);
-
+      let file = event.target.files[0]
+      let dataUrl = await this.getDataUrl(file)
       let imageReqBody = {
-        fileName : file.name,
+        fileName: file.name,
         fileData: dataUrl
       }
-      let imageRes = await fetch("https://vue-todo-app-images.s3.us-east-2.amazonaws.com/images", {
-       method: "post",
-          headers: {
-            "Content-Type" : "application/json"
-          },
-          body: JSON.stringify(imageReqBody)
-      });
+
+      let imageRes = await fetch("https://h9ozo62twe.execute-api.us-east-2.amazonaws.com/images", {
+       method: 'post',
+        headers: {
+          "Content-Type": "application/json"
+        },
+       body: JSON.stringify(imageReqBody)
+      })
       let imageResponseJson = await imageRes.json();
-      console.log(imageResponseJson);
+      console.log(task,imageResponseJson);
+
+      task.imageUrl = imageResponseJson.imageUrl;
+
+      await fetch("https://h9ozo62twe.execute-api.us-east-2.amazonaws.com/todos", {
+        method: 'put',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(task)
+      })
+      // Vue thing, since we're updating something inside of an object 
+      this.$forceUpdate()
     }
 
   }
