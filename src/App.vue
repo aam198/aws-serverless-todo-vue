@@ -12,8 +12,8 @@
     <div class="task-main">
       <span class="task-name"> <i class="fa-solid fa-circle-dot"></i> {{ task.name}} </span>
       <span class="buttons">
-        <button class="browseImage" @click="browseForImage(task.id)"><i class="fa-solid fa-folder-open"></i></button>
-        <button class="edit" @click="editTask(task.id)"><i class="fa-solid fa-pen-nib"></i></button>
+        <button class="browseImage" @click="browseForImage(task.id)"><i class="fa-solid fa-file-image"></i></button>
+        <!-- <button class="edit" @click="editTask(task.id)"><i class="fa-solid fa-pen-nib"></i></button> -->
         <button class="delete" @click="removeTask(task.id)"><i class="fa-solid fa-rectangle-xmark "></i></button>
         </span>
         <input :id="`fileInput-${task.id}`" type="file" class="file-input" @change="event => attachImage(event,task)" hidden  />
@@ -82,7 +82,8 @@ export default {
           },
           body: JSON.stringify(newTask)
         })
-        // Success message
+
+        // Success Toast 
         this.statusCode = response;
         if(this.statusCode.status === 201 ){
           this.$store.commit('addToast', {
@@ -110,7 +111,43 @@ export default {
         console.log(response);
       // To remove from list on the actual app, filter the list of tasks that do NOT match the tasks. 
       this.tasks = this.tasks.filter(task => task.id !== taskId)
+    },
+  // Takes our image and converts it to a string to upload it to AWS for storage
+    async getDataUrl(file) {
+      const reader = new FileReader()
+      return new Promise(resolve => {
+        reader.onload = event => resolve(event.target.result)
+        reader.readAsDataURL(file)
+      })
+    },
+    
+    async browseForImage(id) {
+      const inputEl = document.getElementById(`fileInput-${id}`)
+      inputEl.click()
+    },
+
+    async attachImage(event, task) {
+      // Only taking in 1 file at a time so we can use the array.
+      let file = event.target.files[0];
+      let dataUrl = await this.getDataUrl(file);
+
+      console.log(task, dataUrl);
+
+      let imageReqBody = {
+        fileName : file.name,
+        fileData: dataUrl
+      }
+      let imageRes = await fetch("https://vue-todo-app-images.s3.us-east-2.amazonaws.com/images", {
+       method: "post",
+          headers: {
+            "Content-Type" : "application/json"
+          },
+          body: JSON.stringify(imageReqBody)
+      });
+      let imageResponseJson = await imageRes.json();
+      console.log(imageResponseJson);
     }
+
   }
 
 
@@ -264,6 +301,17 @@ button:hover.delete  {
   flex: 1;
 }
 
+.task-main{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-img {
+  max-width: 40%;
+  border: 1px solid white;
+}
 
 .task {
   display: flex;
@@ -280,13 +328,17 @@ button:hover.delete  {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
 }
 
-
 .task-name {
   margin-left: 10px;
 }
 
 .task-name i{
   margin-right: 10px;
+}
+
+.file-input{
+  display: none;
+  visibility: hidden;
 }
 
 /* Enter transitions */
