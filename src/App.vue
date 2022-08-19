@@ -29,15 +29,18 @@
   <transition name= "toast">
     <ExtraToasts />
   </transition>
+  <PagePagination />
 </template>
 
 <script>
 import ExtraToasts from '@/components/ExtraToasts.vue';
+import PagePagination from '@/components/PagePagination.vue';
 
 export default {
   name: 'App',
   components: {
-    ExtraToasts
+    ExtraToasts,
+    PagePagination
   },
   data() {
     // Return an object
@@ -174,8 +177,31 @@ export default {
   --accent-blue: #518099;
   --light-accent: #b2cfde;
   --orange: #ff844b;
-  --light-orange: #ffe0d2;
+  --light-orange: #ffa77e;
+}
+html {
+  font-size: calc((var(--base) / 16) * 100%);
+  --r32: calc((32 / var(--base) * 1rem));
+  --r24: calc((24 / var(--base) * 1rem));
+  --r16: calc((16 / var(--base) * 1rem));
+  --base: 16;
+}
 
+h1, h2, h3, p {
+  font-weight: normal;
+  margin: 0 0 var(--r24) 0;
+}
+
+p {
+  font-size:16px;
+}
+
+h1 {
+  font-size: var(--r32);
+}
+
+h2 {
+  font-size: var(--r24);
 }
 
 #app {
@@ -346,7 +372,8 @@ button.browseImage{
   background-color: transparent;
   color: var(--orange);
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  margin-right: 10px;
 }
 
 button.browseImage:hover {
