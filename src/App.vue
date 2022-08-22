@@ -29,7 +29,12 @@
   <transition name= "toast">
     <ExtraToasts />
   </transition>
-  <PagePagination />
+  <PagePagination
+    :totalPages="10"
+    :total="113"
+    :perPage="10"
+    :currentPage ="currentPage"
+    @pagechanged="onPageChange" />
 </template>
 
 <script>
@@ -48,7 +53,8 @@ export default {
       // Connects to the v-model above to pass the input to here.
       newTaskInput: "",
       tasks: [],
-      statusCode: ""
+      statusCode: "",
+      currentPage: 1,
     }
   },
   // Lifecycle Hook, default function that runs anytime a component is created. 
@@ -162,6 +168,10 @@ export default {
       // Vue thing, since we're updating something inside of an object 
       this.$forceUpdate()
     }
+  },
+  onPageChange(page) {
+      console.log(page)
+      this.currentPage = page;
   }
 }
 </script>
