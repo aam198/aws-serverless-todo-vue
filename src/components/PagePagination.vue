@@ -1,63 +1,69 @@
 <template>
+<!-- https://www.digitalocean.com/community/tutorials/vuejs-vue-pagination-component -->
   <ul class="pagination">
     <li class="pagination-item">
       <button 
+        class="control"
         type="button"
         @click="onClickFirstPage"
         :disabled="isInFirstPage"
-        aria-label="Go to first page">First</button>
+        aria-label="Go to first page"><i class="fa fa-angles-left"></i></button>
     </li>
     <li class="pagination-item">
       <button 
+        class="control"
         @click="onClickPreviousPage"
         :disabled="isInFirstPage"
-        aria-label="Go to previous page">Previous</button>
+        aria-label="Go to previous page"><i class="fa fa-angle-left"></i></button>
     </li>
   <!-- Visible Button Start -->
-  <li v-for="page in pages" :key="page.name"  class="pagination-item">
-    <button 
-      type="button"
-      @click="onClickPage(page.name)"
+  <li
+      v-for="page in pages"
+      :key="page.name"
+      class="pagination-item"
+    >
+      <button
+        class="control"
+        type="button"
+        @click="onClickPage(page.name)"
         :disabled="page.isDisabled"
         :class="{ active: isPageActive(page.name) }"
-        :aria-label="`Go to page number ${page.name}`"> {{page.name}}</button>
-   </li>
+      >
+        {{ page.name }}
+      </button>
+    </li>
   <!-- Visible Button End -->
 
   <li class="pagination-item">
     <button 
+      class="control"
       type="button"
       @click="onClickNextPage"
       :disabled="isInLastPage">
-      Next
+      <i class="fa fa-angle-right"></i>
     </button>
   </li>
   <li class="pagination-item">
     <button 
+      class="control"
       type="button"
        @click="onClickLastPage"
        :disabled="isInLastPage">
-      Last
+     <i class="fa fa-angles-right"></i>
     </button>
   </li>
   </ul>
 </template>
 
 <script>
-
 export default {
-  name: 'PagePagination',
   props: {
-   maxVisibleButtons: {
+    maxVisibleButtons: {
       type: Number,
       required: false,
       default: 3
-    },
+    },    
     totalPages: {
-      type: Number,
-      required: true
-    },
-    total: {
       type: Number,
       required: true
     },
@@ -68,7 +74,7 @@ export default {
     currentPage: {
       type: Number,
       required: true
-    },
+    }
   },
   computed: {
     startPage() {
@@ -76,36 +82,48 @@ export default {
       if (this.currentPage === 1) {
         return 1;
       }
+
       // When on the last page
       if (this.currentPage === this.totalPages) {
-        return this.totalPages - this.maxVisibleButtons + 1;
+        const start = this.totalPages - (this.maxVisibleButtons - 1);
+
+        if(start === 0) {
+          return 1;
+        } else { 
+          return start;
+        }
       }
-      // When in between these pages
+
+      // When in between
       return this.currentPage - 1;
+    },
+    pages() {
+      const range = [];
+
+      for (
+        let i = this.startPage;
+        i <= Math.min(this.startPage + this.maxVisibleButtons - 1, this.totalPages);
+        i++
+      ) {
+        range.push({
+          name: i,
+          isDisabled: i === this.currentPage
+        });
+      }
+
+      return range;
     },
     endPage() {
       return Math.min(this.startPage + this.maxVisibleButtons - 1, this.totalPages);
     },
-    pages () {
-      const range = [];
-
-      for (let i = this.startPage; i <= this.endPage; i+= 1 ) {
-        range.push({
-          name: i,
-          isDisabled: i === this.currentPage 
-        });
-      }
-      return range;
-    },
-    isInFirstPage () {
+    isInFirstPage() {
       return this.currentPage === 1;
     },
     isInLastPage() {
       return this.currentPage === this.totalPages;
-    }
+    },
   },
   methods: {
-    // In order to inform the parent, we’ll use the $emit method to emit an event with the page clicked.
     onClickFirstPage() {
       this.$emit('pagechanged', 1);
     },
@@ -119,12 +137,12 @@ export default {
       this.$emit('pagechanged', this.currentPage + 1);
     },
     onClickLastPage() {
-      this.$emit('pagechanged', this.totalPages);    
+      this.$emit('pagechanged', this.totalPages);
     },
     isPageActive(page) {
       return this.currentPage === page;
-    },
-  },
+    }
+  }
 };
 
 </script>
@@ -132,12 +150,40 @@ export default {
 <style>
 .pagination{
   list-style-type: none;
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  height: 10vh;
+  margin-top: 1rem;
+  margin: 0;
+  padding: 0;
 }
-.pagination-item {
-  display: inline-block;
+.pagination-item button{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: 0;
+}
+.control{
+  cursor: pointer;
+  position: relative;
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 5px;
+  background: transparent;
+}
+button:is(:disabled, :disabled:active){
+  cursor:not-allowed;
 }
 .active {
-  background-color: #4aae9b;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2 ease-in-out;
+  background-color: var(--orange);
   color: #fff;
 }
 </style>
