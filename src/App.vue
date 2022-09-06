@@ -1,4 +1,5 @@
 <template>
+
   <div class="app-wrapper">
     <header>
       <h1>Dashboard</h1>
@@ -35,18 +36,21 @@
   <transition name= "toast">
     <ExtraToasts />
   </transition>
-  
+
+  <JokeButton class="tell-joke" />
 </template>
 
 <script>
 import ExtraToasts from '@/components/ExtraToasts.vue';
 import PagePagination from '@/components/PagePagination.vue';
+import JokeButton from '@/components/JokeButton.vue'
 
 export default {
   name: 'App',
   components: {
     ExtraToasts,
-    PagePagination
+    PagePagination,
+    JokeButton
   },
   data() {
     // Return an object
@@ -329,14 +333,14 @@ input:focus-visible{
   visibility: hidden;
 }
 
-button.addTask {
+button.addTask, .tellJoke {
   background-color: #ff844b;
   color: var(--dark-blue);
   border: 1px solid #ffe0d2;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
 }
 
-button.addTask{
+button.addTask, .tellJoke{
   border-radius: 12px;
   cursor: pointer;
   font-weight: bold;
@@ -359,7 +363,7 @@ button.addTask{
 }
 
 
-button.delete, button.edit, button.browseImage {
+button.delete, button.edit, button.browseImage, .tellJoke {
   color: #2a3453;
   border-radius: 12px;
   cursor: pointer;
@@ -371,10 +375,10 @@ button.delete, button.edit, button.browseImage {
   margin: 1rem 0px;
 }
 
-button.addTask:hover{
+button.addTask:hover, .tellJoke:hover{
   background-color: #ffe0d2;
   border: 1px solid #ff844b;
-  box-shadow: 0 1rem 10rem 0 #040c21;
+  /* box-shadow: 0 1rem 10rem 0 #040c21; */
   transform: translateY(-.25rem);
   text-shadow: 0 1px 0 hsl(0 0% 0% / 20%);
 }

@@ -1,5 +1,6 @@
 <template>
 <!-- https://www.digitalocean.com/community/tutorials/vuejs-vue-pagination-component -->
+<!-- TODO: Need to adjust to change quantity of items per page -->
   <ul class="pagination">
     <li class="pagination-item">
       <button 
