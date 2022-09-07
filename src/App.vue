@@ -9,7 +9,7 @@
       <button class="addTask" @click ="addTask">Add Task</button>
     </div>
     <!-- Tasks will be an array that lists our tasks -->
-    <div class="task" v-for="task in tasks" :key="task.id">
+    <div class="task" v-for="task in currentPageToDo" :key="task.id">
     <div class="task-main">
       <span class="task-name">  {{ task.name}} </span>
       <div class="task-img" v-if="task.imageUrl">
@@ -27,6 +27,8 @@
     
     </div>
   </div>
+<!-- TODO Update function of totalPages based on amount -->
+<!--Documentation:  https://stackoverflow.com/questions/65289397/pagination-in-vue-visible-items -->
   <PagePagination
       :totalPages="5"
       :perPage="5"
@@ -61,6 +63,12 @@ export default {
       statusCode: "",
       currentPage: 1,
       perPage: 5,
+      visibleTodos: [],
+    }
+  },
+  computed: {
+    currentPageToDo() {
+      return this.tasks.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage)
     }
   },
   // Lifecycle Hook, default function that runs anytime a component is created. 
@@ -177,6 +185,17 @@ export default {
     onPageChange(page) {
       console.log(page)
       this.currentPage = page;
+   },
+   updatePage(pageNumber){
+    this.currentPage = pageNumber;
+    this.updateVisibleTodos();
+   },
+   updateVisibleTodos() {
+    this.visibleTodos = this.tasks.slice(this.currentPage * this.perPage, (this.currentPage * this.perPage)+ this.perPage)
+
+    if(this.visibleTodos.length === 0 && this.currentPage > 1){
+      this.updatePage(this.currentPage - 1)
+    }
    }
   },
 }
