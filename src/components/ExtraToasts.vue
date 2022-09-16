@@ -1,6 +1,6 @@
 
 <template>
-   <div class="toasts-wrapper" v-if="toasts.length">
+  <div class="toasts-wrapper" v-if="toasts.length">
     <SingleToast
       v-for="(toast, index) of toasts"
       :toast="toast"
@@ -33,6 +33,6 @@ export default {
     align-items: center;
     position: fixed;
     right: 1rem;
-    bottom: 2rem;
+    bottom: 8rem;
   }
 </style>

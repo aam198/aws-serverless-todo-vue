@@ -14,7 +14,7 @@
       <span class="task-name">  {{ task.name}} </span>
       <div class="task-img" v-if="task.imageUrl">
       <img :src="task.imageUrl" />
-     </div>
+    </div>
       <span class="buttons">
         <button class="browseImage" @click="browseForImage(task.id)"><i class="fa-solid fa-file-image"></i></button>
         <!-- <button class="edit" @click="editTask(task.id)"><i class="fa-solid fa-pen-nib"></i></button> -->
@@ -144,7 +144,6 @@ export default {
       })
     },
 
-    
     async browseForImage(id) {
       const inputEl = document.getElementById(`fileInput-${id}`)
       inputEl.click()
@@ -159,11 +158,11 @@ export default {
       }
 
       let imageRes = await fetch("https://h9ozo62twe.execute-api.us-east-2.amazonaws.com/images", {
-       method: 'post',
+        method: 'post',
         headers: {
           "Content-Type": "application/json"
         },
-       body: JSON.stringify(imageReqBody)
+        body: JSON.stringify(imageReqBody)
       })
       
       let imageResponseJson = await imageRes.json();
@@ -185,18 +184,18 @@ export default {
     onPageChange(page) {
       console.log(page)
       this.currentPage = page;
-   },
-   updatePage(pageNumber){
-    this.currentPage = pageNumber;
-    this.updateVisibleTodos();
-   },
-   updateVisibleTodos() {
-    this.visibleTodos = this.tasks.slice(this.currentPage * this.perPage, (this.currentPage * this.perPage)+ this.perPage)
+    },
+    updatePage(pageNumber){
+      this.currentPage = pageNumber;
+      this.updateVisibleTodos();
+    },
+    updateVisibleTodos() {
+      this.visibleTodos = this.tasks.slice(this.currentPage * this.perPage, (this.currentPage * this.perPage)+ this.perPage)
 
-    if(this.visibleTodos.length === 0 && this.currentPage > 1){
-      this.updatePage(this.currentPage - 1)
+      if(this.visibleTodos.length === 0 && this.currentPage > 1){
+        this.updatePage(this.currentPage - 1)
+      }
     }
-   }
   },
 }
 </script>
@@ -211,8 +210,9 @@ export default {
   --med-blue: #4b6d7e;
   --accent-blue: #518099;
   --light-accent: #b2cfde;
-  --orange: #ff844b;
-  --light-orange: #ffa77e;
+  --orange: #FAA300;
+  --light-orange: #FFBF47;
+  --dark-orange: #E09200;
 }
 html {
   font-size: calc((var(--base) / 16) * 100%);
@@ -321,7 +321,8 @@ input:focus-visible{
 }
 
 .task-img img {
-  max-width: 60%;
+  max-width: 40%;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
 }
 
 .task {
@@ -353,7 +354,7 @@ input:focus-visible{
 }
 
 button.addTask, .tellJoke {
-  background-color: #ff844b;
+  background-color: var(--orange);
   color: var(--dark-blue);
   border: 1px solid #ffe0d2;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
@@ -395,8 +396,8 @@ button.delete, button.edit, button.browseImage, .tellJoke {
 }
 
 button.addTask:hover, .tellJoke:hover{
-  background-color: #ffe0d2;
-  border: 1px solid #ff844b;
+  background-color: var(--light-orange);
+  border: 1px solid var(--orange);
   /* box-shadow: 0 1rem 10rem 0 #040c21; */
   transform: translateY(-.25rem);
   text-shadow: 0 1px 0 hsl(0 0% 0% / 20%);
@@ -412,7 +413,7 @@ button.browseImage{
 }
 
 button.browseImage:hover {
-  color: var(--light-orange);
+  color: var(--dark-orange);
   transform: translateY(-.25rem) scale(1.2);
 }
 
@@ -435,9 +436,8 @@ button:hover.delete  {
 }
 
 
-
 /* Enter transitions */
- .toast-enter-from {
+  .toast-enter-from {
     opacity: 0;
     transform: translateY(-60px);
   }

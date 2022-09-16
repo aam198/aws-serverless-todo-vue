@@ -40,13 +40,13 @@ export default {
 
 :root {
   --cream: #faf8f7;
-  --light-grey: #e7e7e7;
+  --light-grey: #F0F7F4;
   --grey: #cccccc;
   --white: #FFFFFF;
   --green: #1A936F;
-  --red: #de3838;
+  --red: #df2935;
   --blue: #009999;
-  --yellow: #ffd400;
+  --yellow: #fdca40;
 }
 
 .success, .info, .warning, .error {
@@ -82,7 +82,7 @@ export default {
   border-top-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
   border-top-right-radius: .5rem;
-  box-shadow: 0 0 0.5rem var(--grey);
+  box-shadow: 0 0 0.5rem rgb(76, 66, 76, 0.5);
 }
 
 .toast p {
