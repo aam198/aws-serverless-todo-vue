@@ -30,9 +30,10 @@ button{
 }
 
 .joke-content {
-  border: 1px solid var(--light-accent);
+  border: 1px solid black;
   border-radius: 5px;
   padding: 0.5rem 0.2rem;
+  margin: 10px 10px;
 }
 </style>
 

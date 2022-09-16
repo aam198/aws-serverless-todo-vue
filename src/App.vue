@@ -30,7 +30,7 @@
 <!-- TODO Update function of totalPages based on amount -->
 <!--Documentation:  https://stackoverflow.com/questions/65289397/pagination-in-vue-visible-items -->
   <PagePagination
-      :totalPages="5"
+      :totalPages="Math.ceil(tasks.length / perPage)"
       :perPage="5"
       :currentPage="currentPage"
       @pagechanged="onPageChange"
@@ -64,6 +64,7 @@ export default {
       currentPage: 1,
       perPage: 5,
       visibleTodos: [],
+      totalPages: 2,
     }
   },
   computed: {
@@ -195,6 +196,9 @@ export default {
       if(this.visibleTodos.length === 0 && this.currentPage > 1){
         this.updatePage(this.currentPage - 1)
       }
+    },
+    updateTotalPages(){
+      return Math.ceil(this.visibleTodos.length / this.perPage);
     }
   },
 }

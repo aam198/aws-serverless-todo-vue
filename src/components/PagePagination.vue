@@ -48,9 +48,9 @@
     <button 
       class="control"
       type="button"
-       @click="onClickLastPage"
-       :disabled="isInLastPage">
-     <i class="fa fa-angles-right"></i>
+      @click="onClickLastPage"
+      :disabled="isInLastPage">
+      <i class="fa fa-angles-right"></i>
     </button>
   </li>
   </ul>
